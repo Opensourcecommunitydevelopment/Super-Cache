@@ -1,11 +1,11 @@
+
+
 var getCachingType = function(response) {
 	var tab = chromeTabs.findById(response.tabId);
 	if (tab !== undefined) {
-		var savedHost = savedHosts.findUrlMatch(tab.url);
-		if (savedHost !== null) {
-			return savedHost.filter[response.type];
+			return 'cache';
 
-		}
+		
 	}
 	return false;
 };
@@ -113,34 +113,7 @@ var onHeadersReceived = function(response) {
 		responseLog(response.type, response.url);
 	}
 
-
-	switch (cachingType) {
-		case UTIL_KEYS.CACHECONTROL_TYPE.CACHE:
-
-			responseHeaders = hm.updateHeader(HeaderKeys.CACHE_CONTROL, [HeaderValues.HIGH_MAXAGE])
-				//.updateHeader(HeaderKeys.EXPIRES, HeaderValues.FUTURE_DATE)
-				//.updateHeader("ETag", "tushar.html")
-				.getHeaders();
-
-			//responseHeaders = removeHeaders(responseHeaders, HeaderKeys.VARY);
-
-			break;
-
-
-		case UTIL_KEYS.CACHECONTROL_TYPE.NOSTORE:
-
-			//HeaderValues.NOCACHE, HeaderValues.NOSTORE, HeaderValues.REVALIDATE]
-			responseHeaders = hm.updateHeader(HeaderKeys.CACHE_CONTROL, HeaderValues.ZERO_MAXAGE)
-			//.updateHeader(HeaderKeys.PRAGMA, [HeaderValues.NOCACHE])
-			.getHeaders();
-
-			break;
-
-		default:
-			break;
-
-
-	}
+			responseHeaders = hm.updateHeader(HeaderKeys.CACHE_CONTROL, [HeaderValues.HIGH_MAXAGE]).getHeaders();
 
 	return {
 		responseHeaders: responseHeaders
